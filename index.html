@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Relatório Técnico · Silvanio Góis · Retrofit 72m² · Gestão de Obras</title>
     <!-- Google Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
@@ -10,7 +10,7 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        /* (mesmo estilo anterior, mantido para consistência) */
+        /* ===== RESET E BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -28,9 +28,12 @@
             --primary-soft: #e9f0f8;
             --white: #ffffff;
         }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* ===== HEADER ===== */
         .header {
             background: var(--white);
-            padding: 1.5rem 2rem;
+            padding: 1.5rem 1rem;
             border-bottom: 4px solid var(--primary);
             box-shadow: 0 6px 14px rgba(0,30,50,0.06);
         }
@@ -76,20 +79,27 @@
             border-radius: 60px; border: 1px solid var(--primary-border);
             display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
         }
+
+        /* ===== CONTEÚDO PRINCIPAL ===== */
         .main-content {
-            max-width: 1300px; margin: 2.5rem auto; padding: 0 2rem; flex: 1;
+            max-width: 1300px; 
+            margin: 2.5rem auto; 
+            padding: 0 1rem; 
+            flex: 1;
+            width: 100%;
         }
-        /* Estilos para o relatório */
+
+        /* ===== COMPONENTES REUTILIZÁVEIS ===== */
         .executive-summary {
             background: linear-gradient(145deg, #ffffff 0%, #f9fcff 100%);
             border-radius: 32px;
-            padding: 2.5rem;
+            padding: 2rem 1.5rem;
             margin-bottom: 3rem;
             box-shadow: 0 15px 30px rgba(0,40,60,0.1);
             border: 1px solid var(--primary-border);
         }
         .executive-summary h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 1.5rem;
@@ -99,31 +109,33 @@
         .executive-summary .summary-stats {
             display: flex;
             flex-wrap: wrap;
-            gap: 2rem;
+            gap: 1.5rem;
             margin: 2rem 0;
             justify-content: space-around;
         }
         .summary-card {
             background: white;
             border-radius: 28px;
-            padding: 1.5rem 2rem;
+            padding: 1.2rem 1rem;
             text-align: center;
-            flex: 1;
-            min-width: 150px;
+            flex: 1 1 160px;
+            min-width: 140px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             border: 1px solid var(--primary-border);
         }
         .summary-card .value {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary);
             line-height: 1.2;
+            word-break: break-word;
         }
         .summary-card .label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             color: #2b5777;
         }
+
         .section-title {
             font-size: 2rem;
             font-weight: 700;
@@ -132,10 +144,11 @@
             border-left: 8px solid var(--primary);
             padding-left: 1.5rem;
         }
+
         .phase {
             background: var(--white);
             border-radius: 32px;
-            padding: 2rem 2.2rem;
+            padding: 1.8rem 1.5rem;
             border: 1px solid #deecf5;
             box-shadow: 0 5px 16px rgba(0,0,0,0.02);
             margin-bottom: 2rem;
@@ -145,6 +158,7 @@
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
         .phase-icon {
             background: var(--primary);
@@ -159,17 +173,73 @@
             font-weight: 700;
         }
         .phase-title {
-            font-size: 1.9rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary);
             letter-spacing: -0.02em;
+            line-height: 1.2;
         }
-        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0; }
-        .three-columns { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-        @media (max-width: 700px) { .two-columns, .three-columns { grid-template-columns: 1fr; } }
+
+        /* ===== GRIDS ===== */
+        .two-columns { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 2rem; 
+            margin: 1.5rem 0; 
+        }
+        .three-columns { 
+            display: grid; 
+            grid-template-columns: repeat(3,1fr); 
+            gap: 1rem; 
+            margin: 1rem 0;
+        }
+
+        /* ===== TABELAS RESPONSIVAS ===== */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 1rem 0;
+            border-radius: 16px;
+        }
+        .budget-table, .eap-table, .bdi-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 600px; /* força rolagem em telas muito pequenas */
+        }
+        .budget-table th, .eap-table th {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.75rem 0.5rem;
+            text-align: left;
+            border-bottom: 2px solid var(--primary-border);
+            white-space: nowrap;
+        }
+        .budget-table td, .eap-table td {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid #dbe6f0;
+        }
+        .budget-table .total-row { background: #e0edf9; font-weight: 700; }
+        .budget-table .right { text-align: right; }
+
+        /* tabelas internas (bdi) */
+        .bdi-table td {
+            padding: 0.3rem 0.5rem;
+        }
+        .bdi-table .right { text-align: right; }
+
+        /* EAP com níveis */
+        .eap-level1 { font-weight: 700; background-color: #f0f6fe; }
+        .eap-level2 { padding-left: 2rem !important; }
+        .eap-link { font-size: 0.8rem; color: var(--primary); font-weight: 500; }
+
+        /* ===== BOXES E ELEMENTOS ===== */
         .bullet-list { list-style: none; margin-top: 1rem; }
         .bullet-list li { margin-bottom: 0.8rem; display: flex; gap: 0.8rem; align-items: flex-start; }
         .bullet-list li i { color: var(--primary); font-size: 1.1rem; min-width: 1.3rem; }
+
         .tag {
             background: #deecf9;
             color: var(--primary);
@@ -179,6 +249,7 @@
             font-size: 0.85rem;
             display: inline-block;
             margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
         }
         .badge-green {
             background: #d4edda;
@@ -187,6 +258,8 @@
             border-radius: 30px;
             font-weight: 600;
             font-size: 0.9rem;
+            display: inline-block;
+            margin: 0.5rem 0;
         }
         .badge-red {
             background: #f8d7da;
@@ -195,31 +268,15 @@
             border-radius: 30px;
             font-weight: 600;
             font-size: 0.9rem;
+            display: inline-block;
         }
         .fvs-box {
             background: #f2f8ff;
             border-radius: 22px;
-            padding: 1.2rem 1.8rem;
+            padding: 1.2rem 1.5rem;
             margin: 1.2rem 0;
             border-left: 5px solid var(--primary);
         }
-        .budget-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-            font-size: 0.95rem;
-        }
-        .budget-table th {
-            background: var(--primary-soft);
-            color: var(--primary);
-            font-weight: 600;
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 2px solid var(--primary-border);
-        }
-        .budget-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #dbe6f0; }
-        .budget-table .total-row { background: #e0edf9; font-weight: 700; }
-        .budget-table .right { text-align: right; }
         .document-box {
             background: #f4f9ff;
             border-radius: 24px;
@@ -227,9 +284,34 @@
             border: 2px dashed var(--primary-border);
             margin: 1.5rem 0;
             font-family: 'Courier New', monospace;
+            word-break: break-word;
         }
-        .chart-container { position: relative; height: 260px; width: 100%; margin: 1.5rem 0; }
-        .gantt-wrap { overflow-x: auto; margin: 1.5rem 0; }
+        .real-case-note {
+            background: #fcf8e7;
+            border-radius: 18px;
+            padding: 1rem 1.5rem;
+            border-left: 5px solid #e6b422;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* ===== GRÁFICO ===== */
+        .chart-container { 
+            position: relative; 
+            height: 260px; 
+            width: 100%; 
+            margin: 1.5rem 0; 
+            max-width: 100%;
+        }
+        canvas { max-width: 100%; height: auto !important; }
+
+        /* ===== GANTT ===== */
+        .gantt-wrap { 
+            overflow-x: auto; 
+            margin: 1.5rem 0; 
+            border-radius: 24px;
+            -webkit-overflow-scrolling: touch;
+        }
         .gantt-grid {
             display: grid;
             grid-template-columns: 220px repeat(14, 1fr);
@@ -249,6 +331,7 @@
             height: 16px;
             margin: 2px 0;
             opacity: 0.9;
+            max-width: 100%;
         }
         .gantt-bar.real {
             background-color: #e68a2e;
@@ -263,9 +346,12 @@
             justify-content: flex-end;
             margin-top: 0.5rem;
             font-size: 0.9rem;
+            flex-wrap: wrap;
         }
         .legend-item { display: flex; align-items: center; gap: 0.5rem; }
         .legend-color { width: 20px; height: 20px; border-radius: 6px; }
+
+        /* ===== KPI CARDS ===== */
         .kpi-card {
             background: var(--white);
             border-radius: 20px;
@@ -274,40 +360,26 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.02);
             border: 1px solid var(--primary-border);
         }
-        .eap-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
+        .stat-label { font-size: 0.9rem; color: #2b5777; display: block; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--primary); line-height: 1.2; }
+
+        .stats-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-around;
+            background: #f0f6fe;
+            padding: 1rem;
+            border-radius: 20px;
+            margin: 1rem 0;
         }
-        .eap-table th {
-            background: var(--primary-soft);
-            color: var(--primary);
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 2px solid var(--primary-border);
-        }
-        .eap-table td {
-            padding: 0.5rem 0.75rem;
-            border-bottom: 1px solid #d0e2f2;
-        }
-        .eap-level1 { font-weight: 700; background-color: #f0f6fe; }
-        .eap-level2 { padding-left: 2rem !important; }
-        .eap-link { font-size: 0.8rem; color: var(--primary); font-weight: 500; }
-        .bdi-table { width: 100%; margin-top: 0.5rem; }
-        .bdi-table td { padding: 0.3rem 0; }
-        .bdi-table .right { text-align: right; }
-        .real-case-note {
-            background: #fcf8e7;
-            border-radius: 18px;
-            padding: 1rem 1.5rem;
-            border-left: 5px solid #e6b422;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-        }
+        .stats-mini > div { text-align: center; }
+
+        /* ===== FOOTER ===== */
         .footer {
             background: var(--white);
             border-top: 2px solid var(--primary-border);
-            padding: 1.8rem 2rem;
+            padding: 1.8rem 1rem;
             margin-top: 3rem;
         }
         .footer-content {
@@ -317,8 +389,9 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
+        .footer-copy { font-size: 0.9rem; color: #2c4a63; }
         .footer-link {
             background: var(--primary);
             color: white;
@@ -329,9 +402,86 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
         .footer-link:hover { background: #1d4f73; }
         .footnote { font-size: 0.8rem; color: #527a9c; text-align: center; margin-top: 1rem; }
+
+        /* ===== BOTÃO VOLTAR AO TOPO ===== */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(39, 98, 141, 0.7);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, background-color 0.2s;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            backdrop-filter: blur(4px);
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        #back-to-top:hover {
+            background-color: var(--primary);
+            transform: scale(1.05);
+        }
+        #back-to-top:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== MEDIA QUERIES ===== */
+        @media (max-width: 900px) {
+            .header-container { flex-direction: column; align-items: flex-start; }
+            .profile-area { width: 100%; }
+            .phase-title { font-size: 1.6rem; }
+            .two-columns { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+        @media (max-width: 600px) {
+            .executive-summary h2 { font-size: 1.8rem; }
+            .summary-card .value { font-size: 1.5rem; }
+            .phase { padding: 1.5rem 1rem; }
+            .phase-header { gap: 0.8rem; }
+            .phase-icon { width: 45px; height: 45px; font-size: 1.4rem; border-radius: 18px; }
+            .phase-title { font-size: 1.4rem; }
+            .three-columns { grid-template-columns: 1fr; gap: 1rem; }
+            .gantt-header > div { font-size: 0.8rem; padding: 0.5rem 0.2rem; }
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-link { width: 100%; justify-content: center; }
+            .contact-info { width: 100%; justify-content: center; }
+            .profile-text h1 { font-size: 1.5rem; }
+            .profile-img { width: 70px; height: 70px; }
+            #back-to-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 42px;
+                height: 42px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .summary-stats { gap: 1rem; }
+            .summary-card { min-width: 120px; }
+            .document-box { padding: 1rem; font-size: 0.85rem; }
+        }
+
+        /* Garantir que tabelas internas não quebrem */
+        .bdi-table { min-width: auto; width: 100%; }
+        .table-responsive::-webkit-scrollbar { height: 6px; }
+        .table-responsive::-webkit-scrollbar-thumb { background: var(--primary-border); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -381,50 +531,54 @@
         <section class="phase">
             <div class="phase-header"><span class="phase-icon">2</span><h3 class="phase-title">Planejamento: Orçamento Conservador e EAP</h3></div>
             <p>Com base em visitas técnicas, cotações de mercado e histórico de obras similares, elaboramos um orçamento analítico com custos diretos conservadores, incluindo perda de 10% em revestimentos. O custo direto total foi estimado em <strong>R$ 187.000</strong>, distribuído conforme tabela abaixo.</p>
-            <table class="budget-table">
-                <thead><tr><th>Item</th><th>Quant.</th><th>Un.</th><th>Material (R$)</th><th>Mão de obra (R$)</th><th>Total (R$)</th></tr></thead>
-                <tbody>
-                    <tr><td>Demolição/caçambas</td><td>1</td><td>vb</td><td>2.200</td><td>6.500</td><td>8.700</td></tr>
-                    <tr><td>Hidráulica (água quente/fria PPR, esgoto)</td><td>1</td><td>vb</td><td>8.400</td><td>9.900</td><td>18.300</td></tr>
-                    <tr><td>Elétrica (quadro DR, fios, tomadas)</td><td>1</td><td>vb</td><td>12.300</td><td>10.100</td><td>22.400</td></tr>
-                    <tr><td>Contrapiso/regularização</td><td>85</td><td>m²</td><td>2.800</td><td>4.500</td><td>7.300</td></tr>
-                    <tr><td>Piso porcelanato 80x80 (121m² c/ perda)</td><td>121</td><td>m²</td><td>17.800</td><td>8.600</td><td>26.400</td></tr>
-                    <tr><td>Revestimento paredes (banheiros/cozinha)</td><td>68</td><td>m²</td><td>5.600</td><td>5.400</td><td>11.000</td></tr>
-                    <tr><td>Forro drywall + sanca</td><td>70</td><td>m²</td><td>4.200</td><td>4.300</td><td>8.500</td></tr>
-                    <tr><td>Pintura acrílica (paredes/teto)</td><td>210</td><td>m²</td><td>3.800</td><td>7.600</td><td>11.400</td></tr>
-                    <tr><td>Esquadrias alumínio (4 janelas + 2 portas)</td><td>1</td><td>vb</td><td>14.200</td><td>5.300</td><td>19.500</td></tr>
-                    <tr><td>Bancadas granito/quartzo</td><td>8,5</td><td>m</td><td>6.400</td><td>1.600</td><td>8.000</td></tr>
-                    <tr><td>Metais e louças (torneiras, vaso, cuba)</td><td>1</td><td>vb</td><td>7.900</td><td>1.400</td><td>9.300</td></tr>
-                    <tr><td>Marcenaria (cozinha, armários)</td><td>1</td><td>vb</td><td>28.000</td><td>6.000</td><td>34.000</td></tr>
-                    <tr><td>Limpeza final / caçamba extra</td><td>1</td><td>vb</td><td>800</td><td>1.400</td><td>2.200</td></tr>
-                    <tr class="total-row"><td colspan="3"><strong>Total Custo Direto (CD)</strong></td><td><strong>R$ 114.400</strong></td><td><strong>R$ 72.600</strong></td><td><strong>R$ 187.000</strong></td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="budget-table">
+                    <thead><tr><th>Item</th><th>Quant.</th><th>Un.</th><th>Material (R$)</th><th>Mão de obra (R$)</th><th>Total (R$)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Demolição/caçambas</td><td>1</td><td>vb</td><td>2.200</td><td>6.500</td><td>8.700</td></tr>
+                        <tr><td>Hidráulica (água quente/fria PPR, esgoto)</td><td>1</td><td>vb</td><td>8.400</td><td>9.900</td><td>18.300</td></tr>
+                        <tr><td>Elétrica (quadro DR, fios, tomadas)</td><td>1</td><td>vb</td><td>12.300</td><td>10.100</td><td>22.400</td></tr>
+                        <tr><td>Contrapiso/regularização</td><td>85</td><td>m²</td><td>2.800</td><td>4.500</td><td>7.300</td></tr>
+                        <tr><td>Piso porcelanato 80x80 (121m² c/ perda)</td><td>121</td><td>m²</td><td>17.800</td><td>8.600</td><td>26.400</td></tr>
+                        <tr><td>Revestimento paredes (banheiros/cozinha)</td><td>68</td><td>m²</td><td>5.600</td><td>5.400</td><td>11.000</td></tr>
+                        <tr><td>Forro drywall + sanca</td><td>70</td><td>m²</td><td>4.200</td><td>4.300</td><td>8.500</td></tr>
+                        <tr><td>Pintura acrílica (paredes/teto)</td><td>210</td><td>m²</td><td>3.800</td><td>7.600</td><td>11.400</td></tr>
+                        <tr><td>Esquadrias alumínio (4 janelas + 2 portas)</td><td>1</td><td>vb</td><td>14.200</td><td>5.300</td><td>19.500</td></tr>
+                        <tr><td>Bancadas granito/quartzo</td><td>8,5</td><td>m</td><td>6.400</td><td>1.600</td><td>8.000</td></tr>
+                        <tr><td>Metais e louças (torneiras, vaso, cuba)</td><td>1</td><td>vb</td><td>7.900</td><td>1.400</td><td>9.300</td></tr>
+                        <tr><td>Marcenaria (cozinha, armários)</td><td>1</td><td>vb</td><td>28.000</td><td>6.000</td><td>34.000</td></tr>
+                        <tr><td>Limpeza final / caçamba extra</td><td>1</td><td>vb</td><td>800</td><td>1.400</td><td>2.200</td></tr>
+                        <tr class="total-row"><td colspan="3"><strong>Total Custo Direto (CD)</strong></td><td><strong>R$ 114.400</strong></td><td><strong>R$ 72.600</strong></td><td><strong>R$ 187.000</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
             <p>Para garantir o perfeito entendimento do escopo, estruturamos a EAP (Estrutura Analítica do Projeto) vinculando cada pacote de trabalho às atividades do cronograma.</p>
-            <table class="eap-table">
-                <thead><tr><th>Cód.</th><th>Pacote de Trabalho</th><th>Responsável</th><th>Custo (R$)</th><th>Atividade no Gantt</th></tr></thead>
-                <tbody>
-                    <tr class="eap-level1"><td>1</td><td>Pré-obra e Mobilização</td><td>Gestor</td><td>8.700</td><td class="eap-link">Demolição / infra</td></tr>
-                    <tr class="eap-level2"><td>1.1</td><td>Demolição e caçambas</td><td>Empreiteiro</td><td>8.700</td><td>Demolição / infra</td></tr>
-                    <tr class="eap-level1"><td>2</td><td>Infraestrutura (Sistemas)</td><td>Gestor</td><td>40.700</td><td class="eap-link">Hidro/elétrica</td></tr>
-                    <tr class="eap-level2"><td>2.1</td><td>Hidráulica completa</td><td>Encanador</td><td>18.300</td><td>Hidro/elétrica</td></tr>
-                    <tr class="eap-level2"><td>2.2</td><td>Elétrica completa</td><td>Eletricista</td><td>22.400</td><td>Hidro/elétrica</td></tr>
-                    <tr class="eap-level1"><td>3</td><td>Revestimentos e Acabamentos</td><td>Gestor</td><td>57.400</td><td class="eap-link">Múltiplas</td></tr>
-                    <tr class="eap-level2"><td>3.1</td><td>Contrapiso</td><td>Pedreiro</td><td>7.300</td><td>Contrapiso</td></tr>
-                    <tr class="eap-level2"><td>3.2</td><td>Piso porcelanato</td><td>Assentador</td><td>26.400</td><td>Revestimentos</td></tr>
-                    <tr class="eap-level2"><td>3.3</td><td>Revestimento paredes</td><td>Assentador</td><td>11.000</td><td>Revestimentos</td></tr>
-                    <tr class="eap-level2"><td>3.4</td><td>Forro drywall</td><td>Gesseiro</td><td>8.500</td><td>Forro / drywall</td></tr>
-                    <tr class="eap-level2"><td>3.5</td><td>Pintura</td><td>Pintor</td><td>11.400</td><td>Pintura</td></tr>
-                    <tr class="eap-level1"><td>4</td><td>Esquadrias e Metais</td><td>Gestor</td><td>36.800</td><td class="eap-link">Esquadrias/metais</td></tr>
-                    <tr class="eap-level2"><td>4.1</td><td>Esquadrias alumínio</td><td>Fornecedor</td><td>19.500</td><td>Esquadrias/metais</td></tr>
-                    <tr class="eap-level2"><td>4.2</td><td>Bancadas</td><td>Marmorista</td><td>8.000</td><td>Esquadrias/metais</td></tr>
-                    <tr class="eap-level2"><td>4.3</td><td>Metais e louças</td><td>Fornecedor</td><td>9.300</td><td>Esquadrias/metais</td></tr>
-                    <tr class="eap-level1"><td>5</td><td>Marcenaria</td><td>Marceneiro</td><td>34.000</td><td class="eap-link">Marcenaria</td></tr>
-                    <tr class="eap-level1"><td>6</td><td>Limpeza e Entrega</td><td>Equipe</td><td>2.200</td><td class="eap-link">Limpeza/entrega</td></tr>
-                    <tr class="eap-level2"><td>6.1</td><td>Limpeza final</td><td>Servente</td><td>2.200</td><td>Limpeza/entrega</td></tr>
-                    <tr class="total-row"><td colspan="3"><strong>TOTAL</strong></td><td><strong>R$ 187.000</strong></td><td></td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="eap-table">
+                    <thead><tr><th>Cód.</th><th>Pacote de Trabalho</th><th>Responsável</th><th>Custo (R$)</th><th>Atividade no Gantt</th></tr></thead>
+                    <tbody>
+                        <tr class="eap-level1"><td>1</td><td>Pré-obra e Mobilização</td><td>Gestor</td><td>8.700</td><td class="eap-link">Demolição / infra</td></tr>
+                        <tr class="eap-level2"><td>1.1</td><td>Demolição e caçambas</td><td>Empreiteiro</td><td>8.700</td><td>Demolição / infra</td></tr>
+                        <tr class="eap-level1"><td>2</td><td>Infraestrutura (Sistemas)</td><td>Gestor</td><td>40.700</td><td class="eap-link">Hidro/elétrica</td></tr>
+                        <tr class="eap-level2"><td>2.1</td><td>Hidráulica completa</td><td>Encanador</td><td>18.300</td><td>Hidro/elétrica</td></tr>
+                        <tr class="eap-level2"><td>2.2</td><td>Elétrica completa</td><td>Eletricista</td><td>22.400</td><td>Hidro/elétrica</td></tr>
+                        <tr class="eap-level1"><td>3</td><td>Revestimentos e Acabamentos</td><td>Gestor</td><td>57.400</td><td class="eap-link">Múltiplas</td></tr>
+                        <tr class="eap-level2"><td>3.1</td><td>Contrapiso</td><td>Pedreiro</td><td>7.300</td><td>Contrapiso</td></tr>
+                        <tr class="eap-level2"><td>3.2</td><td>Piso porcelanato</td><td>Assentador</td><td>26.400</td><td>Revestimentos</td></tr>
+                        <tr class="eap-level2"><td>3.3</td><td>Revestimento paredes</td><td>Assentador</td><td>11.000</td><td>Revestimentos</td></tr>
+                        <tr class="eap-level2"><td>3.4</td><td>Forro drywall</td><td>Gesseiro</td><td>8.500</td><td>Forro / drywall</td></tr>
+                        <tr class="eap-level2"><td>3.5</td><td>Pintura</td><td>Pintor</td><td>11.400</td><td>Pintura</td></tr>
+                        <tr class="eap-level1"><td>4</td><td>Esquadrias e Metais</td><td>Gestor</td><td>36.800</td><td class="eap-link">Esquadrias/metais</td></tr>
+                        <tr class="eap-level2"><td>4.1</td><td>Esquadrias alumínio</td><td>Fornecedor</td><td>19.500</td><td>Esquadrias/metais</td></tr>
+                        <tr class="eap-level2"><td>4.2</td><td>Bancadas</td><td>Marmorista</td><td>8.000</td><td>Esquadrias/metais</td></tr>
+                        <tr class="eap-level2"><td>4.3</td><td>Metais e louças</td><td>Fornecedor</td><td>9.300</td><td>Esquadrias/metais</td></tr>
+                        <tr class="eap-level1"><td>5</td><td>Marcenaria</td><td>Marceneiro</td><td>34.000</td><td class="eap-link">Marcenaria</td></tr>
+                        <tr class="eap-level1"><td>6</td><td>Limpeza e Entrega</td><td>Equipe</td><td>2.200</td><td class="eap-link">Limpeza/entrega</td></tr>
+                        <tr class="eap-level2"><td>6.1</td><td>Limpeza final</td><td>Servente</td><td>2.200</td><td>Limpeza/entrega</td></tr>
+                        <tr class="total-row"><td colspan="3"><strong>TOTAL</strong></td><td><strong>R$ 187.000</strong></td><td></td></tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- ========== 3. BDI E FORMAÇÃO DE PREÇO ========== -->
@@ -433,16 +587,18 @@
             <div class="two-columns">
                 <div>
                     <span class="tag">Composição do BDI (sobre o CD)</span>
-                    <table class="bdi-table">
-                        <tr><td>Administração central</td><td class="right">4,01%</td></tr>
-                        <tr><td>Despesas financeiras</td><td class="right">1,34%</td></tr>
-                        <tr><td>Risco (contingência)</td><td class="right">4,46%</td></tr>
-                        <tr><td>Seguros + garantia</td><td class="right">1,07%</td></tr>
-                        <tr><td>Lucro</td><td class="right">8,91%</td></tr>
-                        <tr><td>Despesas comerciais</td><td class="right">1,78%</td></tr>
-                        <tr style="border-top:2px solid var(--primary); font-weight:700;"><td>Subtotal (itens isentos de impostos)</td><td class="right">21,57%</td></tr>
-                        <tr><td>Impostos (alíquota efetiva DAS)</td><td class="right">8,13% (sobre a receita)</td></tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="bdi-table">
+                            <tr><td>Administração central</td><td class="right">4,01%</td></tr>
+                            <tr><td>Despesas financeiras</td><td class="right">1,34%</td></tr>
+                            <tr><td>Risco (contingência)</td><td class="right">4,46%</td></tr>
+                            <tr><td>Seguros + garantia</td><td class="right">1,07%</td></tr>
+                            <tr><td>Lucro</td><td class="right">8,91%</td></tr>
+                            <tr><td>Despesas comerciais</td><td class="right">1,78%</td></tr>
+                            <tr style="border-top:2px solid var(--primary); font-weight:700;"><td>Subtotal (itens isentos de impostos)</td><td class="right">21,57%</td></tr>
+                            <tr><td>Impostos (alíquota efetiva DAS)</td><td class="right">8,13% (sobre a receita)</td></tr>
+                        </table>
+                    </div>
                     <p style="font-size:0.9rem; margin-top:0.5rem;">O BDI de 32,33% é obtido pela fórmula: <br> BDI = (1 + 0,2157) / (1 - 0,0813) - 1 = 1,2157/0,9187 - 1 = 0,3233 (32,33%).</p>
                 </div>
                 <div>
@@ -573,16 +729,18 @@
         <!-- ========== 7. FLUXO DE CAIXA REALIZADO ========== -->
         <section class="phase">
             <div class="phase-header"><span class="phase-icon">7</span><h3 class="phase-title">Fluxo de Caixa e Resultado Financeiro</h3></div>
-            <table class="budget-table">
-                <thead><tr><th>Mês</th><th>Receitas (R$)</th><th>Desembolsos (R$)</th><th>Saldo (R$)</th></tr></thead>
-                <tbody>
-                    <tr><td>Fev/2025</td><td>74.237 (sinal)</td><td>45.000</td><td>+29.237</td></tr>
-                    <tr><td>Mar/2025</td><td>74.237 (2ª medição)</td><td>82.000</td><td>+21.474</td></tr>
-                    <tr><td>Abr/2025</td><td>74.237 (3ª medição)</td><td>68.200 (inclui extras)</td><td>+27.511</td></tr>
-                    <tr><td>Jun/2025</td><td>24.746 (retenção 10%)</td><td>-</td><td>+24.746</td></tr>
-                    <tr class="total-row"><td>Total</td><td>247.457</td><td>195.200</td><td>52.257</td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="budget-table">
+                    <thead><tr><th>Mês</th><th>Receitas (R$)</th><th>Desembolsos (R$)</th><th>Saldo (R$)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Fev/2025</td><td>74.237 (sinal)</td><td>45.000</td><td>+29.237</td></tr>
+                        <tr><td>Mar/2025</td><td>74.237 (2ª medição)</td><td>82.000</td><td>+21.474</td></tr>
+                        <tr><td>Abr/2025</td><td>74.237 (3ª medição)</td><td>68.200 (inclui extras)</td><td>+27.511</td></tr>
+                        <tr><td>Jun/2025</td><td>24.746 (retenção 10%)</td><td>-</td><td>+24.746</td></tr>
+                        <tr class="total-row"><td>Total</td><td>247.457</td><td>195.200</td><td>52.257</td></tr>
+                    </tbody>
+                </table>
+            </div>
             <p><i class="fas fa-info-circle"></i> Desembolsos totais de R$ 195.200 incluem custos diretos (R$ 187.100) e custos indiretos (R$ 8.100). O saldo positivo de R$ 52.257 representa a geração de caixa antes da distribuição de lucros e impostos.</p>
         </section>
 
@@ -592,14 +750,16 @@
             <div class="two-columns">
                 <div>
                     <span class="tag"> Demonstração do Resultado</span>
-                    <table style="width:100%; margin-top:1rem; font-size:0.9rem;">
-                        <tr><td>Receita total da obra</td><td class="right">R$ 247.457</td><td>100%</td></tr>
-                        <tr><td>(-) Custos diretos (material + MO com encargos)</td><td class="right">R$ 187.100</td><td>75,6%</td></tr>
-                        <tr style="border-top:1px solid #ccc;"><td><strong>Lucro Bruto (operacional)</strong></td><td class="right"><strong>R$ 60.357</strong></td><td><strong>24,4%</strong></td></tr>
-                        <tr><td>(-) DAS (IRPJ, CSLL, PIS, COFINS, ISS) - alíquota efetiva 8,13%</td><td class="right">-R$ 20.118</td><td>8,13%</td></tr>
-                        <tr><td>(-) Custos indiretos (administração, comercial, etc.)</td><td class="right">-R$ 8.100</td><td>3,3%</td></tr>
-                        <tr style="border-top:2px solid var(--primary); font-weight:700;"><td><strong>Lucro Líquido</strong></td><td class="right"><strong>R$ 32.139</strong></td><td><strong>13,0%</strong></td></tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table style="width:100%; margin-top:1rem; font-size:0.9rem; border-collapse: collapse;">
+                            <tr><td>Receita total da obra</td><td class="right">R$ 247.457</td><td>100%</td></tr>
+                            <tr><td>(-) Custos diretos (material + MO com encargos)</td><td class="right">R$ 187.100</td><td>75,6%</td></tr>
+                            <tr style="border-top:1px solid #ccc;"><td><strong>Lucro Bruto (operacional)</strong></td><td class="right"><strong>R$ 60.357</strong></td><td><strong>24,4%</strong></td></tr>
+                            <tr><td>(-) DAS (IRPJ, CSLL, PIS, COFINS, ISS) - alíquota efetiva 8,13%</td><td class="right">-R$ 20.118</td><td>8,13%</td></tr>
+                            <tr><td>(-) Custos indiretos (administração, comercial, etc.)</td><td class="right">-R$ 8.100</td><td>3,3%</td></tr>
+                            <tr style="border-top:2px solid var(--primary); font-weight:700;"><td><strong>Lucro Líquido</strong></td><td class="right"><strong>R$ 32.139</strong></td><td><strong>13,0%</strong></td></tr>
+                        </table>
+                    </div>
                 </div>
                 <div>
                     <span class="tag"> Detalhamento Tributário</span>
@@ -655,10 +815,35 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-copy">© 2026 Silvanio Góis · Da estratégia à operação, conectando, processos, pessoas e resultados</div>
+            <div class="footer-copy">© 2026 Silvanio Góis · Da estratégia à operação, conectando processos, pessoas e resultados</div>
             <a href="https://www.silvaniogois.com.br/" target="_blank" class="footer-link"><i class="fas fa-external-link-alt"></i> ir ao Site</a>
         </div>
         <div class="footnote">Case real · Ed. "Sigilo" · Tributação Anexo IV · v1.0</div>
     </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="back-to-top" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        // Back to top button
+        (function() {
+            const backToTopButton = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        })();
+    </script>
 </body>
 </html>
